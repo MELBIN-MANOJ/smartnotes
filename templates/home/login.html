@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-dark text-white">Log in</div>
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                         <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" placeholder="Enter your username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Continue</button>
+                    </form>
+                </div>
+                <div class="card-footer text-muted text-center">
+                    Don't have an account?
+                    <a href="{% url 'signup' %}">Sign up</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .list-group-item-action:hover {
+        background-color: #32CD32;  /* green color */
+        color: #fff;  /* white text color */
+    }
+</style>
+<div class="row">
+    <div class="col-md-3">
+        <div class="sidebar">
+            <h4 class="sidebar-heading mb-4">Notes List</h4>
+            <div class="list-group">
+                {% for note in notes %}
+                <a href="{% url 'notes.detail' pk=note.id %}" class="list-group-item list-group-item-action mb-2" style="transition: background-color 0.2s ease-in-out;">  <!-- added transition effect -->
+                    {{ note.title|truncatechars:25 }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        {% if note %}
+        <h4 class="heading mb-4">Note Details</h4>
+        <div class="card">
+            <div class="card-body">
+                <h1 class="fs-5">{{ note.title }}</h1>
+                <p>{{ note.text }}</p>
+                <p>Created: {{ note.created|date:"M j, Y" }}</p>  <!-- display created date and time -->
+                <p>Updated: {{ note.updated|date:"M j, Y" }}</p>  <!-- display updated date and time -->
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'notes.update' pk=note.id %}" class="btn btn-warning">Edit Note</a>
+                <a href="{% url 'notes.delete' pk=note.id %}" class="btn btn-danger">Delete Note</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="jumbotron">
+            <h1 class="display-5">Welcome to Smart Notes</h1>
+            <p class="lead">Start by creating your first note or explore existing ones.</p>
+            <a class="btn btn-primary" href="{% url 'notes.new' %}" role="button">Create a Note</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

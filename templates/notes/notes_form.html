@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h4 class="heading mb-4">Note Details</h4>
+        <div class="card">
+            <div class="card-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <a href="{% url 'notes.list' %}" class="btn btn-primary">Back</a>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+                {% if form.errors%}
+                    <div class="alert alert-danger">
+                    {{ form.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

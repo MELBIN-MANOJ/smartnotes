@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+    commands:
+      - pip install --upgrade pip setuptools
+      - apt-get update
+      - apt-get install -y build-essential python3-dev libfreetype6-dev liblcms2-dev libjpeg8-dev libopenjp2-7-dev libtiff5-dev tcl8.6-dev tk8.6-dev python3-tk
+      - python3 -m venv venv
+      - . venv/bin/activate 
+  pre_build:
+    commands:
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - echo Build phase
+      - mkdir -p build
+      - echo "Hello, world!" > build/output.txt
+      - ls -la build
+  post_build:
+    commands:
+      - echo Post-build phase
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: build

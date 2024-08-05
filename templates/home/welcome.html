@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            {% if user.is_authenticated %}
+                <div class="text-center">
+                    <h1 class="display-4 mb-4">Welcome Back!</h1>
+                    <p class="lead mb-4">You are already logged in. Go ahead and explore your notes.</p>
+                    <a href="{% url 'notes.list' %}" class="btn btn-primary btn-lg">Go to Notes List</a>
+                </div>
+            {% else %}
+            <div class="text-center">
+                <h1 class="display-4 mb-4">Welcome to Smart Notes</h1>
+                <p class="lead mb-5">Organize your ideas effortlessly and stay productive with Smart Notes. Join us now and experience the ultimate note-taking solution.</p>
+                <div class="mt-4">
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg me-3">Login</a>
+                    <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-lg">SignUp</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

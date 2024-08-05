@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="confirm-message text-center">
+                        <h4 class="card-title">Confirm Deletion</h4>
+                        <p class="card-text">Are you sure you want to delete <strong>{{ notes.title }}</strong>?</p>
+                        <p class="card-text">This action cannot be undone.</p>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-sm btn-danger" value="Confirm">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
