@@ -1,24 +1,263 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row justify-content-center">
+<style>
+    :root {
+        --bg-color: #f8f9fa;
+        --text-color: #333;
+        --border-color: #dee2e6;
+        --accent-color: #007bff;
+        --hover-text-color: #fff;
+        --card-bg: #fff;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+        --chat-bg: #f4f4f4;
+        --chat-user-bg: #007bff;
+        --chat-bot-bg: #e1e1e1;
+    }
+
+    .dark-mode {
+        --bg-color: #333;
+        --text-color: #f8f9fa;
+        --border-color: #555;
+        --accent-color: #4CAF50;
+        --hover-text-color: #fff;
+        --card-bg: #444;
+        --shadow-color: rgba(255, 255, 255, 0.1);
+        --chat-bg: #2a2a2a;
+        --chat-user-bg: #0056b3;
+        --chat-bot-bg: #4a4a4a;
+    }
+
+    body {
+        color: var(--text-color);
+        transition: all 0.3s ease;
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px var(--shadow-color);
+        transition: all 0.3s ease;
+    }
+
+
+    .heading {
+        font-weight: 700;
+        color: var(--text-color);
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        border-radius: 25px;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px var(--shadow-color);
+    }
+
+
+    /* Chat container styling */
+    .chat-container {
+        max-width: 400px;
+        margin-left: 20px;
+    }
+
+    #chat-container {
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px var(--shadow-color);
+        background-color: var(--chat-bg);
+        transition: all 0.3s ease;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--text-color);
+        font-weight: 700;
+    }
+
+    .chat-box {
+        background: var(--card-bg);
+        border-radius: 15px;
+        border: 1px solid var(--border-color);
+        padding: 15px;
+        height: 400px;
+        overflow-y: auto;
+        box-shadow: inset 0 0 10px var(--shadow-color);
+    }
+
+    .message {
+        display: flex;
+        margin-bottom: 10px;
+        animation: fade-in 0.5s ease-in-out;
+    }
+
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message-content {
+        padding: 10px 15px;
+        border-radius: 20px;
+        max-width: 70%;
+        word-wrap: break-word;
+        font-size: 16px;
+        box-shadow: 0 2px 5px var(--shadow-color);
+    }
+
+    .user-message .message-content {
+        background-color: var(--chat-user-bg);
+        color: white;
+        align-self: flex-end;
+        border-radius: 20px 20px 0 20px;
+    }
+
+    .bot-message .message-content {
+        background-color: var(--chat-bot-bg);
+        color: var(--text-color);
+        align-self: flex-start;
+        border-radius: 20px 20px 20px 0;
+    }
+
+    .input-group {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    .input-field {
+        flex: 1;
+        padding: 12px 15px;
+        border-radius: 25px;
+        border: 1px solid var(--border-color);
+        font-size: 16px;
+        margin-right: 10px;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .send-button {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 25px;
+        background: linear-gradient(90deg, var(--accent-color), #00bfff);
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+
+    .send-button:hover {
+        background: linear-gradient(90deg, #0056b3, #0099cc);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px var(--shadow-color);
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+        border-radius: 15px;
+        padding: 15px;
+        margin-top: 20px;
+    }
+</style>
+
+<div class="row justify-content-center g-4">
     <div class="col-md-6">
-        <h4 class="heading mb-4">Note Details</h4>
+        <h4 class="heading mb-4">CREATE NOTE</h4>
         <div class="card">
             <div class="card-body">
                 <form action="" method="post">
                     {% csrf_token %}
-                    {{ form }}
-                    <a href="{% url 'notes.list' %}" class="btn btn-primary">Back</a>
-                    <button type="submit" class="btn btn-success">Submit</button>
+                    {{ form.category.label }} {{ form.category }}
+                    {{ form.title.label }} {{ form.title }}
+                    {{ form.text.label }} {{ form.text }}
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'notes.list' %}" class="btn btn-primary me-2">Back</a>
+                        <button type="submit" class="btn btn-success">Create</button>
+                    </div>
                 </form>
-                {% if form.errors%}
-                    <div class="alert alert-danger">
-                    {{ form.errors }}
+                {% if form.errors %}
+                    <div class="alert alert-danger mt-4">
+                        {{ form.errors }}
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
-</div>
-{% endblock content %}
 
+    <!-- Chatbot container -->
+    <div class="chat-container col-md-4">
+        <h4 class="heading mb-4">GENERATE NOTES</h4>
+        <div id="chat-container" class="mt-4">
+            <h2 class="header">Chat</h2>
+            <div id="chat-messages" class="chat-box">
+                <!-- Chat messages will appear here -->
+            </div>
+            <form id="chat-form" class="input-group">
+                {% csrf_token %}
+                <input type="text" id="user-input" name="user_input" class="input-field" placeholder="Type your message..." autofocus>
+                <button type="submit" class="send-button">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('chat-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var userInput = document.getElementById('user-input').value.trim();
+    var chatMessages = document.getElementById('chat-messages');
+    
+    if (userInput) {
+        // Add user message to chat with animation
+        chatMessages.innerHTML += '<div class="message user-message"><div class="message-content">' + userInput + '</div></div>';
+        
+        // Scroll to the bottom of the chat
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Clear input field
+        document.getElementById('user-input').value = '';
+
+        // Simulate typing indicator
+        chatMessages.innerHTML += '<div id="typing-indicator" class="message bot-message typing"><div class="message-content">...</div></div>';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // Send request to server
+        fetch('{% url "chatbot" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: 'user_input=' + encodeURIComponent(userInput)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove typing indicator
+            document.getElementById('typing-indicator').remove();
+            
+            // Add bot response to chat with animation
+            chatMessages.innerHTML += '<div class="message bot-message"><div class="message-content">' + data.response + '</div></div>';
+            
+            // Scroll to the bottom of the chat
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    }
+});
+</script>
+
+{% endblock content %}

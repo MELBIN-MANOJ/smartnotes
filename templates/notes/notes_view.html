@@ -1,18 +1,138 @@
 {% extends 'base.html' %}
 {% block content %}
 <style>
+    :root {
+        --bg-color: #f8f9fa;
+        --text-color: #333;
+        --border-color: #dee2e6;
+        --accent-color: #32CD32;
+        --hover-text-color: #fff;
+        --card-bg: #fff;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-mode {
+        --bg-color: #333;
+        --text-color: #f8f9fa;
+        --border-color: #555;
+        --accent-color: #4CAF50;
+        --hover-text-color: #fff;
+        --card-bg: #444;
+        --shadow-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+        color: var(--text-color);
+        transition: all 0.3s ease;
+    }
+
+    .sidebar {
+        background-color: var(--bg-color);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px var(--shadow-color);
+    }
+
+    .sidebar-heading {
+        font-weight: 700;
+        color: var(--text-color);
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 10px;
+    }
+
+    .list-group-item-action {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+        border-radius: 5px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border-color);
+    }
+
     .list-group-item-action:hover {
-        background-color: #32CD32;  /* green color */
-        color: #fff;  /* white text color */
+        background-color: var(--accent-color);
+        color: var(--hover-text-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(50, 205, 50, 0.2);
+    }
+
+    .card {
+        background-color: var(--card-bg);
+        color: var(--text-color);
+        border: none;
+        box-shadow: 0 4px 6px var(--shadow-color);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px var(--shadow-color);
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .card-footer {
+        background-color: var(--bg-color);
+        border-top: 1px solid var(--border-color);
+        padding: 1rem 2rem;
+    }
+
+    .btn {
+        border-radius: 25px;
+        padding: 0.5rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px var(--shadow-color);
+    }
+
+    .jumbotron {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 6px var(--shadow-color);
+    }
+
+
+    .heading {
+        font-weight: 700;
+        color: var(--text-color);
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .text-muted {
+        color: var(--text-color) !important;
+        opacity: 0.7;
     }
 </style>
 <div class="row">
     <div class="col-md-3">
         <div class="sidebar">
-            <h4 class="sidebar-heading mb-4">Notes List</h4>
+            <h4 class="sidebar-heading mb-4">NOTES LIST</h4>
+            <!-- Dropdown for categories -->
+            <div class="form-group mb-3">
+                <label for="category-select">Select Category:</label>
+                <form method="GET" action="{% url 'notes.list' %}">
+                    <select id="category-select" name="category" class="form-control" onchange="this.form.submit()">
+                        <option value="">All Categories</option>  <!-- Show all notes -->
+                        {% for category in categories %}
+                        <option value="{{ category.id }}"{% if request.GET.category == category.id|stringformat:"s" %} selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
             <div class="list-group">
                 {% for note in notes %}
-                <a href="{% url 'notes.detail' pk=note.id %}" class="list-group-item list-group-item-action mb-2" style="transition: background-color 0.2s ease-in-out;">  <!-- added transition effect -->
+                <a href="?note_id={{ note.id }}&category={{ request.GET.category }}" class="list-group-item list-group-item-action mb-2" style="transition: background-color 0.2s ease-in-out;">
                     {{ note.title|truncatechars:25 }}
                 </a>
                 {% endfor %}
@@ -21,17 +141,19 @@
     </div>
     <div class="col-md-9">
         {% if note %}
-        <h4 class="heading mb-4">Note Details</h4>
+        <h4 class="heading mb-4">NOTE DETAILS</h4>
         <div class="card">
             <div class="card-body">
+                <p>Category: {{ note.category.name }}</p>
                 <h1 class="fs-5">{{ note.title }}</h1>
                 <p>{{ note.text }}</p>
-                <p>Created: {{ note.created|date:"M j, Y" }}</p>  <!-- display created date and time -->
-                <p>Updated: {{ note.updated|date:"M j, Y" }}</p>  <!-- display updated date and time -->
+                <p>Created: {{ note.created|date:"M j, Y" }}</p>
+                <p>Updated: {{ note.updated|date:"M j, Y" }}</p>
             </div>
             <div class="card-footer">
                 <a href="{% url 'notes.update' pk=note.id %}" class="btn btn-warning">Edit Note</a>
                 <a href="{% url 'notes.delete' pk=note.id %}" class="btn btn-danger">Delete Note</a>
+                <a href="{% url 'notes.list' %}" class="btn btn-secondary">Back</a>
             </div>
         </div>
         {% else %}

@@ -1,33 +1,46 @@
-from django.views import View
-from django.views.generic import TemplateView, CreateView
-
-from django.contrib.auth.views import LoginView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import redirect
-from django.contrib.auth import logout
+from django.contrib.auth.models import User
+from django.contrib import messages
+ # Ensure you import your Notes model
 
+# Registration view for user signup
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registration successful! You can now log in.')
+            return redirect('login')  # Redirect to login after successful signup
+    else:
+        form = UserCreationForm()
+    return render(request, 'home/register.html', {'form': form})
 
-class SignupView(CreateView):
-    form_class = UserCreationForm
-    template_name = 'home/register.html'
-    success_url = '/smart/notes/'
+# Login view for users and superusers
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
 
-    def get(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
+        if user is not None:
+            login(request, user)
+            # Redirect superuser (admin) to the admin dashboard
+            if user.is_superuser:
+                return redirect('admin_dashboard')  # Change this to your admin dashboard URL
+            # Redirect regular user to the notes list
             return redirect('notes.list')
-        return super().get(request, *args, **kwargs)
+        else:
+            messages.error(request, 'Invalid username or password.')
 
+    return render(request, 'home/login.html')
 
-class LoginInterfaceView(LoginView):
-    template_name = 'home/login.html'
+# Logout view
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
-
-class LogoutView(View):
-    def get(self, request):
-        logout(request)
-        return redirect('login')
-
-
-class HomeView(TemplateView):
-    template_name = 'home/welcome.html'
-
+# Welcome/home view
+def home(request):
+    return render(request, 'home/welcome.html')

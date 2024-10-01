@@ -1,0 +1,76 @@
+{% extends 'admin_dashboard/adminbase.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Dashboard Overview</h2>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase font-weight-bold mb-1">Total Notes</h6>
+                        <h2 class="display-4 mb-0">{{ notes_count }}</h2>
+                    </div>
+                    <i class="fas fa-sticky-note fa-3x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase font-weight-bold mb-1">Total Categories</h6>
+                        <h2 class="display-4 mb-0">{{ categories_count }}</h2>
+                    </div>
+                    <i class="fas fa-tags fa-3x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card bg-warning text-white h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-uppercase font-weight-bold mb-1">Total Users</h6>
+                        <h2 class="display-4 mb-0">{{ users_count }}</h2>
+                    </div>
+                    <i class="fas fa-users fa-3x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">Recent Notes</h6>
+        <a href="{% url 'manage_notes' %}" class="btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-arrow-right fa-sm text-white-50"></i> View All
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="list-group">
+            {% for note in latest_notes %}
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ note.title }}</h5>
+                    <small>{{ note.created|date:"M d, Y" }}</small>
+                </div>
+                <p class="mb-1">By: {{ note.user.username }}</p>
+                <small>Category: {{ note.category.name }}</small>
+            </div>
+            {% empty %}
+            <p class="text-muted">No recent notes available.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

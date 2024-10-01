@@ -17,11 +17,14 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Continue</button>
                     </form>
+                    {% if error %}
+                        <p class="text-danger">{{ error }}</p>
+                    {% endif %}
                 </div>
-                <div class="card-footer text-muted text-center">
-                    Don't have an account?
-                    <a href="{% url 'signup' %}">Sign up</a>
-                </div>
+                <div class="card-footer text-center">
+                    <span class="footer-text">Don't have an account?</span>
+                    <a href="{% url 'signup' %}" class="signup-link">Sign up</a>
+                </div>                
             </div>
         </div>
     </div>

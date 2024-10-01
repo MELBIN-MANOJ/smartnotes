@@ -1,0 +1,150 @@
+{% extends 'admin_dashboard/adminbase.html' %}
+
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Manage Users</h2>
+
+<!-- Table to display users -->
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Date Joined</th>
+                <th>Superuser</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.date_joined }}</td>
+                <td>{% if user.is_superuser %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <a href="{% url 'edit_user' user.id %}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{% url 'delete_user' user.id %}" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No users found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        {% if users.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ users.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        {% for num in users.paginator.page_range %}
+        <li class="page-item {% if users.number == num %}active{% endif %}">
+            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endfor %}
+        {% if users.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ users.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Table styling */
+    .table-responsive {
+        margin-top: 20px;
+    }
+
+    .table thead.thead-dark th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table tbody td {
+        vertical-align: middle;
+    }
+
+    /* Pagination styles */
+    .pagination .page-link {
+        color: #343a40;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #343a40;
+        border-color: #343a40;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #495057;
+        border-color: #495057;
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    /* Additional custom styles */
+    h2 {
+        color: #343a40;
+    }
+
+    .table th, .table td {
+        text-align: center;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Empty state styling */
+    .text-center {
+        color: #6c757d;
+        font-style: italic;
+    }
+
+    /* Responsive adjustments for mobile */
+    @media (max-width: 767.98px) {
+        .table th, .table td {
+            font-size: 14px;
+            padding: 8px;
+        }
+        .btn-sm {
+            font-size: 12px;
+        }
+    }
+</style>
+{% endblock %}

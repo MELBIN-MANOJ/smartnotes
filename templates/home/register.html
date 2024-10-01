@@ -5,28 +5,93 @@
         <div class="card">
             <div class="card-header bg-dark text-white">Sign-up Now</div>
             <div class="card-body">
-                <form action="" method="post">
+                <form action="" method="post" onsubmit="return validatePasswords()">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" name="username" placeholder="Enter your username" required>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 position-relative">
                         <label for="password1" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password1" placeholder="Enter your password" required>
+                        <input type="password" class="form-control" id="password1" name="password1" placeholder="Enter your password" required
+                               onfocus="showPasswordHint()" onblur="hidePasswordHint()">
+                        <span class="position-absolute" style="right: 10px; top: 35px; cursor: pointer;" onclick="togglePassword('password1', 'togglePasswordIcon1')">
+                            <i class="fa fa-eye" id="togglePasswordIcon1"></i>
+                        </span>
+                        <!-- Hidden password hint -->
+                        <small id="password-hint" class="form-text text-muted password-hint" style="display: none;">
+                            Must be 8 characters in length and include Uppercase letters, Lowercase letters, Numbers, and Special characters.
+                        </small>
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3 position-relative">
                         <label for="password2" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" name="password2" placeholder="Confirm your password" required>
+                        <input type="password" class="form-control" id="password2" name="password2" placeholder="Confirm your password" required>
+                        <span class="position-absolute" style="right: 10px; top: 35px; cursor: pointer;" onclick="togglePassword('password2', 'togglePasswordIcon2')">
+                            <i class="fa fa-eye" id="togglePasswordIcon2"></i>
+                        </span>
+                    </div>
+                    <!-- Error message -->
+                    <div id="password-error" class="text-danger mb-3" style="display: none;">
+                        Password and Confirm Password do not match!
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Continue</button>
                 </form>
             </div>
             <div class="card-footer text-muted text-center">
-                Already have an account?
-                <a href="{% url 'login' %}">Log in</a>
+                <span class="footer-text">Already have an account?</span>
+                <a href="{% url 'login' %}" class="signup-link">Log in</a>
             </div>
         </div>
     </div>
 </div>
+
+<!-- JavaScript to toggle password visibility and display hint -->
+<script>
+    function togglePassword(passwordFieldId, iconId) {
+        var passwordField = document.getElementById(passwordFieldId);
+        var icon = document.getElementById(iconId);
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+
+    // Show and hide password hint
+    function showPasswordHint() {
+        const hint = document.getElementById("password-hint");
+        hint.style.display = "block";
+
+        // Check if the dark theme is active
+        if (document.body.classList.contains('dark-mode')) {
+            hint.classList.add('text-white'); // Add class for white text in dark mode
+        } else {
+            hint.classList.remove('text-white'); // Remove class for light mode
+        }
+    }
+
+    function hidePasswordHint() {
+        document.getElementById("password-hint").style.display = "none";
+    }
+
+    // Validate if passwords match
+    function validatePasswords() {
+        var password1 = document.getElementById("password1").value;
+        var password2 = document.getElementById("password2").value;
+        var errorMessage = document.getElementById("password-error");
+
+        if (password1 !== password2) {
+            errorMessage.style.display = "block"; // Show error message
+            return false; // Prevent form submission
+        } else {
+            errorMessage.style.display = "none"; // Hide error message if passwords match
+            return true; // Allow form submission
+        }
+    }
+</script>
+
 {% endblock content %}

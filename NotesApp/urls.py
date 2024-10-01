@@ -17,8 +17,27 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from notes import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('smart/', include('notes.urls')),
+
+
+    path('adminpanel/edit_note/<int:pk>/', views.edit_note, name='edit_note'),
+    path('adminpanel/delete_note/<int:pk>/', views.delete_note, name='delete_note'),
+    path('adminpanel/dashboard/', views.admin_dashboard, name="admin_dashboard"),
+    path('adminpanel/manage_notes/', views.manage_notes, name="manage_notes"),
+    path('adminpanel/manage_categories/', views.manage_categories, name="manage_categories"),
+    path('adminpanel/manage_users/', views.manage_users, name="manage_users"),
+    path('adminpanel/edit_user/<int:id>/', views.edit_user, name="edit_user"),
+    path('adminpanel/delete_user/<int:id>/', views.delete_user, name="delete_user"),
+
+
+    path('adminpanel/edit_category/<int:pk>/', views.edit_category, name="edit_category"),
+    path('adminpanel/delete_category/<int:pk>/', views.delete_category, name="delete_category"),
+    # Change this line in your urlpatterns
+    path('adminpanel/notes-statistics/', views.notes_statistics, name='notes_statistics'),
+
 ]
