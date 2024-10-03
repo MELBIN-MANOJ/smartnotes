@@ -74,12 +74,35 @@ TEMPLATES = [
 WSGI_APPLICATION = 'NotesApp.wsgi.application'
 
 # Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+
+    'default' : {
+
+        'ENGINE' : 'django.db.backends.postgresql',
+
+        'NAME' : 'smartnotes',
+
+        'USER' : 'MELBIN',
+
+        'PASSWORD' : 'MELBIN24',
+
+        'HOST' : 'notesdatabase.cp6e0gq4cae3.us-east-1.rds.amazonaws.com',
+
+        'POST' : '5432',
     }
 }
+
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

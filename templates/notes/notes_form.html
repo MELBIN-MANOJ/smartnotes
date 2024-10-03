@@ -29,7 +29,6 @@
 
     body {
         color: var(--text-color);
-        transition: all 0.3s ease;
     }
 
     .card {
@@ -37,9 +36,7 @@
         border: none;
         border-radius: 15px;
         box-shadow: 0 4px 6px var(--shadow-color);
-        transition: all 0.3s ease;
     }
-
 
     .heading {
         font-weight: 700;
@@ -52,14 +49,12 @@
     .btn {
         border-radius: 25px;
         padding: 0.5rem 1.5rem;
-        transition: all 0.3s ease;
     }
 
     .btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 6px var(--shadow-color);
     }
-
 
     /* Chat container styling */
     .chat-container {
@@ -72,7 +67,6 @@
         border-radius: 15px;
         box-shadow: 0 0 20px var(--shadow-color);
         background-color: var(--chat-bg);
-        transition: all 0.3s ease;
     }
 
     .header {
@@ -95,12 +89,6 @@
     .message {
         display: flex;
         margin-bottom: 10px;
-        animation: fade-in 0.5s ease-in-out;
-    }
-
-    @keyframes fade-in {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
     }
 
     .message-content {
@@ -139,7 +127,6 @@
         font-size: 16px;
         margin-right: 10px;
         outline: none;
-        transition: all 0.3s ease;
     }
 
     .input-field:focus {
@@ -155,7 +142,6 @@
         color: white;
         cursor: pointer;
         font-size: 16px;
-        transition: all 0.3s ease;
     }
 
     .send-button:hover {
@@ -223,7 +209,7 @@ document.getElementById('chat-form').addEventListener('submit', function(e) {
     var chatMessages = document.getElementById('chat-messages');
     
     if (userInput) {
-        // Add user message to chat with animation
+        // Add user message to chat
         chatMessages.innerHTML += '<div class="message user-message"><div class="message-content">' + userInput + '</div></div>';
         
         // Scroll to the bottom of the chat
@@ -250,7 +236,7 @@ document.getElementById('chat-form').addEventListener('submit', function(e) {
             // Remove typing indicator
             document.getElementById('typing-indicator').remove();
             
-            // Add bot response to chat with animation
+            // Add bot response to chat
             chatMessages.innerHTML += '<div class="message bot-message"><div class="message-content">' + data.response + '</div></div>';
             
             // Scroll to the bottom of the chat

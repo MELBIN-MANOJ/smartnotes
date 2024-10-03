@@ -23,7 +23,6 @@
 
     body {
         color: var(--text-color);
-        transition: all 0.3s ease;
     }
 
     .sidebar {
@@ -45,14 +44,12 @@
         color: var(--text-color);
         border-radius: 5px;
         margin-bottom: 10px;
-        transition: all 0.3s ease;
         border: 1px solid var(--border-color);
     }
 
     .list-group-item-action:hover {
         background-color: var(--accent-color);
         color: var(--hover-text-color);
-        transform: translateY(-2px);
         box-shadow: 0 4px 6px rgba(50, 205, 50, 0.2);
     }
 
@@ -61,11 +58,9 @@
         color: var(--text-color);
         border: none;
         box-shadow: 0 4px 6px var(--shadow-color);
-        transition: all 0.3s ease;
     }
 
     .card:hover {
-        transform: translateY(-5px);
         box-shadow: 0 6px 12px var(--shadow-color);
     }
 
@@ -82,11 +77,9 @@
     .btn {
         border-radius: 25px;
         padding: 0.5rem 1.5rem;
-        transition: all 0.3s ease;
     }
 
     .btn:hover {
-        transform: translateY(-2px);
         box-shadow: 0 4px 6px var(--shadow-color);
     }
 
@@ -97,7 +90,6 @@
         padding: 2rem;
         box-shadow: 0 4px 6px var(--shadow-color);
     }
-
 
     .heading {
         font-weight: 700;
@@ -132,7 +124,7 @@
             </div>
             <div class="list-group">
                 {% for note in notes %}
-                <a href="?note_id={{ note.id }}&category={{ request.GET.category }}" class="list-group-item list-group-item-action mb-2" style="transition: background-color 0.2s ease-in-out;">
+                <a href="?note_id={{ note.id }}&category={{ request.GET.category }}" class="list-group-item list-group-item-action mb-2">
                     {{ note.title|truncatechars:25 }}
                 </a>
                 {% endfor %}

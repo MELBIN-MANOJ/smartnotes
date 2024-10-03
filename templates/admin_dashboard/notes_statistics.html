@@ -59,6 +59,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    // Fixed color palette
+    const colors = [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 206, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(153, 102, 255)',
+        'rgb(255, 159, 64)'
+    ];
+
     // Pie Chart for Notes per Category (same size as bar and line chart)
     const notesCtx = document.getElementById('notesChart').getContext('2d');
     const notesChart = new Chart(notesCtx, {
@@ -68,22 +78,8 @@
             datasets: [{
                 label: 'Number of Notes',
                 data: {{ counts|safe }},
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.5)',
-                    'rgba(255, 99, 132, 0.5)',
-                    'rgba(255, 206, 86, 0.5)',
-                    'rgba(54, 162, 235, 0.5)',
-                    'rgba(153, 102, 255, 0.5)',
-                    'rgba(255, 159, 64, 0.5)',
-                ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                ],
+                backgroundColor: colors,
+                borderColor: colors,
                 borderWidth: 1
             }]
         },
@@ -102,8 +98,8 @@
             datasets: [{
                 label: 'Notes Created',
                 data: {{ user_counts|safe }},
-                backgroundColor: 'rgba(255, 159, 64, 0.5)',
-                borderColor: 'rgba(255, 159, 64, 1)',
+                backgroundColor: colors[0],
+                borderColor: colors[0],
                 borderWidth: 1
             }]
         },
@@ -128,7 +124,7 @@
                 label: 'Notes Created Over Time',
                 data: {{ time_counts|safe }},
                 fill: false,
-                borderColor: 'rgba(54, 162, 235, 1)',
+                borderColor: colors[1],
                 tension: 0.1
             }]
         },
