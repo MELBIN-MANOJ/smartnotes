@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: gunicorn --workers 3 --bind 0.0.0.0:8000 NotesApp.wsgi:application
+    volumes:
+      - .:/usr/src/app
+      - static_volume:/usr/src/app/staticfiles
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - ALLOWED_HOSTS=*
+      - DATABASE_URL=postgres://MELBIN:MELBIN24@notesdatabase.cp6e0gq4cae3.us-east-1.rds.amazonaws.com:5432/smartnotes
+    env_file:
+      - .env
+    networks:
+      - webnet
+
+volumes:
+  postgres_data:
+  static_volume:
+
+networks:
+  webnet:
