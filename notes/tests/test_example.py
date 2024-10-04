@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from models import Notes, Category
+from notes.models import Notes, Category
 
 class NotesTestCase(TestCase):
     def setUp(self):
