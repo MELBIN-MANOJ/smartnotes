@@ -47,9 +47,10 @@ pipeline {
             steps {
                 sshagent (credentials: ['my-ec2-key']) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@3.85.23.96/ << 'EOF'
+                    ssh -o StrictHostKeyChecking=no ubuntu@3.85.23.96 << 'EOF'
                     cd /var/lib/jenkins/workspace/myfirstpipeline
-                    # Stop the running containers
+
+                    # Stop the running containers if they exist
                     docker-compose down || true
 
                     # Pull the latest image from Docker Hub
