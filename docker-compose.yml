@@ -11,10 +11,10 @@ services:
       - "8000:8000"
     environment:
       - DEBUG=False
-      - ALLOWED_HOSTS=*
+      - ALLOWED_HOSTS=yourdomain.com,yourserverIP
       - DATABASE_URL=postgres://MELBIN:MELBIN24@notesdatabase.cp6e0gq4cae3.us-east-1.rds.amazonaws.com:5432/smartnotes
     env_file:
-      - .env
+      - .env  # Ensure this file exists in your project root
     networks:
       - webnet
 

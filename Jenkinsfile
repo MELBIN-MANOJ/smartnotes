@@ -50,19 +50,23 @@ pipeline {
                     ssh -o StrictHostKeyChecking=no ubuntu@3.85.23.96 << 'EOF'
                     cd /var/lib/jenkins/workspace/myfirstpipeline
 
+                    # Create an .env file with necessary environment variables
+                    echo "DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY" > .env
+                    echo "DATABASE_URL=$DATABASE_URL" >> .env
+                    echo "OTHER_ENV_VAR=$OTHER_ENV_VAR" >> .env
+
                     # Stop the running containers if they exist
                     docker-compose down || true
 
                     # Pull the latest image from Docker Hub
                     docker pull melbinmanoj/mynotes:latest
 
-                    # Bring up the services with the latest image
+                    # Bring up the services with the latest image and .env
                     docker-compose up -d
 EOF
                     '''
                 }
             }
         }
-
     }
 }
