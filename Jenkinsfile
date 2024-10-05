@@ -22,7 +22,6 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    // Using the Docker access token for authentication
                     withCredentials([string(credentialsId: 'dockertoken', variable: 'DOCKER_TOKEN')]) {
                         sh '''
                         echo "$DOCKER_TOKEN" | docker login -u melbinmanoj --password-stdin
@@ -55,14 +54,14 @@ pipeline {
                     echo "DATABASE_URL=$DATABASE_URL" >> .env
                     echo "OTHER_ENV_VAR=$OTHER_ENV_VAR" >> .env
 
-                    # Stop the running containers if they exist
+                    # Stop and remove any running containers
                     docker-compose down || true
 
                     # Pull the latest image from Docker Hub
                     docker pull melbinmanoj/mynotes:latest
 
-                    # Bring up the services with the latest image and .env
-                    docker-compose up -d
+                    # Run the containers with the latest image and environment variables
+                    docker-compose up -d --remove-orphans
 EOF
                     '''
                 }
